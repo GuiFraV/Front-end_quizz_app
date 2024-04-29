@@ -17,7 +17,7 @@ export default {
       },
       fontFamily: {
         'RubikMedium' : ['Rubik Medium Medium', 'sans-serif'],
-        'RubikMedium' : ['Rubik Medium Regular', 'sans-serif'],
+        'RubikRegular' : ['Rubik Medium Regular', 'sans-serif'],
         'RubikItalic' : ['Rubik Medium Italic', 'sans-serif']
       },
       fontSize: {
