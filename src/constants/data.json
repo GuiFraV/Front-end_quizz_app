@@ -2,7 +2,7 @@
     "quizzes": [
         {
             "title": "HTML",
-            "icon": "./assets/images/icon-html.svg",
+            "icon": "./images/icon-html.svg",
             "questions": [
                 {
                     "question": "What does HTML stand for?",
@@ -108,7 +108,7 @@
         },
         {
             "title": "CSS",
-            "icon": "./assets/images/icon-css.svg",
+            "icon": "./images/icon-css.svg",
             "questions": [
                 {
                     "question": "What does CSS stand for?",
@@ -214,7 +214,7 @@
         },
         {
             "title": "JavaScript",
-            "icon": "./assets/images/icon-js.svg",
+            "icon": "./images/icon-js.svg",
             "questions": [
                 {
                     "question": "Which syntax is correct to output 'Hello World' in an alert box?",
@@ -320,7 +320,7 @@
         },
         {
             "title": "Accessibility",
-            "icon": "./assets/images/icon-accessibility.svg",
+            "icon": "./images/icon-accessibility.svg",
             "questions": [
                 {
                     "question": "What does 'WCAG' stand for?",
@@ -423,6 +423,141 @@
                     "answer": "Google Lighthouse"
                 }
             ]
-        }
+        },
+        {
+            "title": "Javascript Hard",
+            "icon": "./images/icon-js.svg",
+            "questions": [
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "function sayHi() {\n  console.log(name);\n  console.log(age);\n  var name = \"Lydia\";\n  let age = 21;\n}\n\nsayHi();",
+                  "options": [
+                    "A: `Lydia` et `undefined`",
+                    "B: `Lydia` et `ReferenceError`", 
+                    "C: `ReferenceError` et `21`",
+                    "D: `undefined` et `ReferenceError`"
+                  ],
+                  "answer": "D",
+                  "explanation": "Dans la fonction, nous déclarons en premier la variable `name` grâce au mot clé `var`. Cela signifie que la variable est \"levée\" _(hoisted)_ (l'espace mémoire est définie à la phase de création) avec pour valeur par défaut `undefined`, jusqu'à ce que le script atteigne la ligne de définition de la variable. Nous n'avons pas encore défini la variable lorsque nous essayons d'afficher la variable `name`, donc elle a toujours la valeur `undefined`.\n\nLes variables avec le mot clé `let` (et `const`) sont \"levées\" _(hoisted)_, mais contrairement à `var`, elle n'est pas <i>initialisée</i>. Elles ne sont pas accessible avant la ligne qui les déclare (initialise). C'est appelé la \"zone morte temporaire\". Lorsque nous essayons d'accéder aux variables avant leur déclaration, JavaScript renvoie une `ReferenceError`."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 1);\n}\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 1);\n}",
+                  "options": [
+                    "A: `0 1 2` et `0 1 2`",
+                    "B: `0 1 2` et `3 3 3`",
+                    "C: `3 3 3` et `0 1 2`"
+                  ],
+                  "answer": "C",
+                  "explanation": "À cause du système de queue dans JavaScript, la fonction de rappel _(callback)_ du `setTimeout` est appelée _après_ que la boucle soit exécutée. Comme la variable `i` dans la première boucle est déclarée avec le mot-clé `var`, c'est une variable globale. Pendant la boucle, nous incrémentons la valeur de `i` de `1` à chaque fois, en utilisant l'opérateur arithmétique `++`. Lorsque la fonction de rappel _(callback)_ du `setTimeout` est invoquée, `i` est égal à `3` dans le premier exemple.\n\nDans la seconde boucle, la variable `i` est déclarée avec le mot clé `let` : les variables déclarées avec `let` (et `const`) ont une portée de bloc (tout ce qui est entre `{ }` est considéré comme un bloc). Pendant chaque itération, `i` aura une nouvelle valeur, et chaque valeur sera définie dans la boucle."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "const shape = {\n  radius: 10,\n  diameter() {\n    return this.radius * 2;\n  },\n  perimeter: () => 2 * Math.PI * this.radius\n};\n\nshape.diameter();\nshape.perimeter();",
+                  "options": [
+                    "A: `20` et `62.83185307179586`",
+                    "B: `20` et `NaN`",
+                    "C: `20` et `63`",
+                    "D: `NaN` et `63`"  
+                  ],
+                  "answer": "B",
+                  "explanation": "Notez que la valeur de `diameter` est une fonction régulière, alors que celle de `perimeter` est une fonction fléchée.\n\nAvec les fonctions fléchée, le mot clé `this` réfère à son périmètre actuel, contrairement aux fonctions régulières ! Cela signifie que lorsque nous appelons `perimeter`, elle ne réfère pas à l'objet `shape`, mais à son périmètre actuel (`window` par exemple).\n\nIl n'y a pas de valeur `radius` dans cet objet, on retournera `undefined`."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "+true;\n!\"Lydia\";",
+                  "options": [
+                    "A: `1` et `false`",
+                    "B: `false` et `NaN`",
+                    "C: `false` et `false`"
+                  ],
+                  "answer": "A",
+                  "explanation": "L'opérateur arithmétique `+` essait de convertir un opérande en une valeur numérique. `true` devient `1`, et `false` devient `0`.\n\nLa chaîne de caractère `'Lydia'` est une valeur considérée comme vraie _(truthy)_. Ce que nous sommes actuellement en train de demander, c'est \"est-ce que cette valeur considérée comme vraie est fausse ?\". Ce qui retournera `false`."
+                },
+                {
+                  "question": "Laquelle est vraie ?",
+                  "code": "const bird = {\n  size: \"small\"\n};\n\nconst mouse = {\n  name: \"Mickey\",\n  small: true\n};",
+                  "options": [
+                    "A: `mouse.bird.size` n'est pas valide",
+                    "B: `mouse[bird.size]` n'est pas valide",
+                    "C: `mouse[bird[\"size\"]]` n'est pas valide",
+                    "D: Toutes sont valides"
+                  ],
+                  "answer": "A",
+                  "explanation": "En JavaScript, toutes les clés d'objet sont des chaînes de caractères (sauf si c'est un Symbol). Bien que nous ne puissions pas les _typer_ comme des chaînes de caractères, elles sont converties en chaînes de caractères sous le capot.\n\nJavaScript interprète (ou décompresse) les instructions. Lorsque nous utilisons la notation par crochet, il voit le premier crochet `[` et continue jusqu'à ce qu'il trouve le crochet fermant `]`. Seulement après, il évalue l'instruction.\n\n`mouse[bird.size]` : Premièrement, il évalue `bird.size`, qui est `\"small\"`. `mouse[\"small\"]` retourne `true`.\n\nCependant, avec la notation par points, cela n'arrive pas. `mouse` n'a pas de clé appelée `bird`, ce qui signifie que `mouse.bird` est `undefined`. Puis, on demande `size` en utilisant la notation par point : `mouse.bird.size`. Comme `mouse.bird` est `undefined`, on demande `undefined.size`. Cela n'est pas valide, et nous aurons une erreur similaire à `Impossible de lire la propriété \"size\" de undefined`."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "let c = { greeting: \"Hey!\" };\nlet d;\n\nd = c;\nc.greeting = \"Hello\";\nconsole.log(d.greeting);",
+                  "options": [
+                    "A: `Hello`",
+                    "B: `Hey`",
+                    "C: `undefined`",
+                    "D: `ReferenceError`",
+                    "E: `TypeError`"
+                  ],
+                  "answer": "A",
+                  "explanation": "En JavaScript, tous les objets interagissent par _référence_ lorsqu'on les définit égaux les uns aux autres.\n\nPremièrement, la variable `c` contaient une valeur d'objet. Plus tard, nous assignons `d` avec la même référence que `c` à l'objet.\n\n<img src=\"https://i.imgur.com/ko5k0fs.png\" width=\"200\">\n\nQuand on modifie un objet, on les modifie donc tous."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "let a = 3;\nlet b = new Number(3);\nlet c = 3;\n\nconsole.log(a == b);\nconsole.log(a === b);\nconsole.log(b === c);",
+                  "options": [
+                    "A: `true` `false` `true`",
+                    "B: `false` `false` `true`",
+                    "C: `true` `false` `false`",
+                    "D: `false` `true` `true`"
+                  ],
+                  "answer": "C",
+                  "explanation": "`new Number()` est une fonction globale. Bien qu'il ressemble à un nombre, ce n'en est pas vraiment un : il a une poignée de fonctionnalités supplémentaire et est un objet.\n\nQuand nous utilisons l'opérateur `==`, il vérifie seulement qu'il s'agisse de la même _valeur_. Les deux ont pour valeur `3`, donc il retourne `true`.\n\nCependant, quand on utilise l'opérateur `===`, les 2 valeurs _et_ types doivent être les mêmes. `new Number()` n'est pas un nombre, c'est un **objet**, il retourne `false`."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "class Chameleon {\n  static colorChange(newColor) {\n    this.newColor = newColor;\n    return this.newColor;\n  }\n\n  constructor({ newColor = \"green\" } = {}) {\n    this.newColor = newColor;\n  }\n}\n\nconst freddie = new Chameleon({ newColor: \"purple\" });\nfreddie.colorChange(\"orange\");",
+                  "options": [
+                    "A: `orange`",
+                    "B: `purple`",
+                    "C: `green`",
+                    "D: `TypeError`"
+                  ],
+                  "answer": "D",
+                  "explanation": "La fonction `colorChange` est statique. Les méthodes statiques sont désignées pour vivre seulement dans le constructeur qui les a créé et ne peuvent pas être transférer aux enfants. Comme `freddie` est un enfant, la fonction n'est pas transférée et n'est pas disponible dans l'instance de `freddie` : une erreur `TypeError` est renvoyée."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "let greeting;\ngreetign = {}; // Typo!\nconsole.log(greetign);",
+                  "options": [
+                    "A: `{}`",
+                    "B: `ReferenceError: greetign is not defined`",
+                    "C: `undefined`"
+                  ],
+                  "answer": "A",
+                  "explanation": "Il affiche l'objet, car on a juste créé un objet vide dans l'objet global ! Quand on écrit mal `greeting` en `greetign`, JavaScript l'interprète comme il le voit `global.greetign = {}` (ou `window.greetign = {}` dans le navigateur).\n\nPour éviter cela, on peut utiliser `\"use strict\"`. Cela nous assure de devoir déclarer la variable avant de lui assigner une valeur."
+                },
+                {
+                  "question": "Que se passe-t-il lorsque nous faisons ça ?",
+                  "code": "function bark() {\n  console.log(\"Woof!\");\n}\n\nbark.animal = \"dog\";",
+                  "options": [
+                    "A: Rien, c'est tout à fait bon !",
+                    "B: `SyntaxError`. Vous ne pouvez pas ajouter de propriétés à une fonction de cette façon.",
+                    "C: `undefined`",
+                    "D: `ReferenceError`"
+                  ],
+                  "answer": "A",
+                  "explanation": "C'est possible en JavaScript, car les fonctions sont des objets ! (Tout ce qui n'est pas de type primitif est un objet)\n\nUne fonction est un type spécial d'objet. Le code que vous écrivez vous-même n'est pas la fonction. La fonction est un objet avec des propriétés. Cette propriété est invocable."
+                },
+                {
+                  "question": "Quelle est la sortie ?",
+                  "code": "function Person(firstName, lastName) {\n  this.firstName = firstName;\n  this.lastName = lastName;\n}\n\nconst member = new Person(\"Lydia\", \"Hallie\");\nPerson.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n\nconsole.log(member.getFullName());",
+                  "options": [
+                    "A: `TypeError`",
+                    "B: `SyntaxError`",
+                    "C: `Lydia Hallie`",
+                    "D: `undefined` `undefined`"
+                  ],
+                  "answer": "A",
+                  "explanation": "Vous ne pouvez pas ajouter de propriétés à un constructeur comme pour des objets normaux. Si vous voulez ajouter une fonctionnalité pour tous les objets en une fois, vous devez utiliser le prototype. Donc dans ce cas,\n\n```js\nPerson.prototype.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n```\n\nrendra fonctionnel `member.getFullName`. Pourquoi est-ce bénéfique ? Disons que nous ajoutons cette méthode au constructeur directement. Peut-être que toutes les instances de `Person` n'ont pas besoin de cette méthode. Cela fera perdre de l'espace mémoire, car elles auront tous cette propriété, ce qui prendra de l'espace mémoire pour chaque instance. Alors que, si nous ajoutons la méthode au prototype uniquement, nous n'utilisons qu'un seul slot mémoire, et ils y auront tous accès !"
+                }
+            ]}
     ]
 }

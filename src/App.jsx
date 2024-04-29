@@ -1,15 +1,12 @@
-import { accessibilityImg } from "./utils"
+import Start from './components/Start';
+
+import { bgDesktopLightImg } from "./utils"
 
 export default function App() {
   return (
 
-    <div>
-      <h1 className="font-RubikItalic text-Display">
-        Hello world!
-      </h1>
-  
-      <img src={accessibilityImg} alt="bag" width={18} height={18} />
+    <div className="flex items-center justify-center w-[1445px] h-[825px] border-2" style={{ backgroundImage: `url(${bgDesktopLightImg})` }}> 
+         <Start/>
     </div>
-
   )
 }
