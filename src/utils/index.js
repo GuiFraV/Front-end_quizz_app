@@ -19,13 +19,13 @@ import bgMobileLight from "/images/pattern-background-mobile-light.svg"
 import bgTabletDark from "/images/pattern-background-tablet-dark.svg"
 import bgTabletLight from "/images/pattern-background-tablet-light.svg"
 
-export const accessibilityImg = accessibility
+export const AccessibilityImg = accessibility
 export const correctImg = correct
-export const cssImg = css
+export const CSSImg = css
 export const errorImg = error
-export const htmlImg = html
+export const HTMLImg = html
 export const incorrectImg = incorrect
-export const jsImg = js
+export const JavaScriptImg = js
 export const moonDarkImg = moonDark
 export const moonLightImg = moonLight
 export const sunDarkImg = sunDark

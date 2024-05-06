@@ -1,4 +1,3 @@
-import Start from './components/Start';
 import QuizApp from './components/QuizApp';
 
 

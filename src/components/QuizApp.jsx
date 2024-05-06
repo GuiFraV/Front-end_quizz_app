@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
+import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg} from '../utils/index.js'
 
 const QuizApp = () => {
   const [showQuiz, setShowQuiz] = useState(false);
@@ -8,6 +9,8 @@ const QuizApp = () => {
   const [timer, setTimer] = useState(60);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+  const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg]
 
   useEffect(() => {
     if (selectedQuizTitle) {
@@ -47,9 +50,20 @@ const QuizApp = () => {
       setTimer(60);
     } else {
       alert("Fin du quiz!");
-      setShowQuiz(false); // Optionnel: retourner à l'écran de sélection
+      setShowQuiz(false); 
     }
   };
+
+  const buttonQuiz = () => {
+    return quizData.quizzes.map((quiz, i) => (
+      <button key={quiz.title} className="hover:border-violet duration-500 drop-shadow h-[96px] rounded-[24px] bg-white relative flex items-center border" onClick={() => handleStartQuiz(quiz.title)}>
+        <div className='ml-[20px] h-[56px] w-[56px] flex flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+          <img src={`${imgQuiz[i]}`} alt="logo HTML"/>
+        </div>
+        <p className='ml-[32px] font-RubikMedium h-[28px] w-[77px] text-3xl flex items-center w-[250px] text-left'>{quiz.title}</p>
+      </button>
+    ));
+  }
 
   if (showQuiz && currentQuiz) {
     return (
@@ -69,17 +83,16 @@ const QuizApp = () => {
   }
 
   return (
-    <div className="border-black border-2 w-[1250px] h-[600px] flex">
-      <div className="border-black border-2 w-[625px] h-[300px]">
-        <p>Welcome to the</p>
-        <p>Frontend Quiz!</p>
-        <p>Pick a subject to get started.</p>
+    <div className="w-[1250px] h-[600px] flex justify-between">
+      <div className="w-[625px] h-[300px] relative">
+        <p className='font-RubikRegular text-[64px] text-darkNavy'>Welcome to the</p>
+        <p className='font-RubikMedium font-bold text-[64px] text-darkNavy'>Frontend Quiz!</p>
+        <p className='font-RubikRegular text-Body-M italic text-greyNavy absolute bottom-0'>Pick a subject to get started.</p>
       </div>
-      <div className="h-full w-[575px] border-2 border-black flex flex-col justify-between">
-        <button onClick={() => handleStartQuiz('HTML')}>HTML</button>
-        <button onClick={() => handleStartQuiz('CSS')}>CSS</button>
-        <button onClick={() => handleStartQuiz('JavaScript')}>JavaScript</button>
-        <button onClick={() => handleStartQuiz('Accessibility')}>Accessibility</button>
+      <div className="h-full w-[575px] flex flex-col justify-between">
+
+        {buttonQuiz()}
+
       </div>
     </div>
   );
