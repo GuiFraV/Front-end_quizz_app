@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
-import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg} from '../utils/index.js'
+import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg} from '../utils/index.js'
 
 const QuizApp = () => {
   const [showQuiz, setShowQuiz] = useState(false);
@@ -9,6 +9,7 @@ const QuizApp = () => {
   const [timer, setTimer] = useState(60);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg]
 
@@ -54,6 +55,10 @@ const QuizApp = () => {
     }
   };
 
+  const darkLightMode = (e) => {
+    setIsDarkMode(!isDarkMode)
+  }
+
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
       <button key={quiz.title} className="hover:border-violet duration-500 drop-shadow h-[96px] rounded-[24px] bg-white relative flex items-center border" onClick={() => handleStartQuiz(quiz.title)}>
@@ -83,7 +88,14 @@ const QuizApp = () => {
   }
 
   return (
-    <div className="w-[1250px] h-[600px] flex justify-between">
+    <div className="w-[1250px] h-[600px] flex justify-between relative">
+      <div className='w-[128px] h-[28px] flex items-center justify-between absolute right-0 top-[-2.875rem]'>
+          <img src={sunDarkImg} alt="Sunlight logo" />
+            <div className='h-[28px] w-[48px] bg-violet rounded-full flex items-center relative'>
+              <div className={`transition-transform duration-300 h-[20px] w-[20px] bg-white rounded-full absolute cursor-pointer left-1 ${isDarkMode ? "translate-x-full" : "translate-x-0"}`} onClick={darkLightMode}></div>
+            </div>
+          <img src={moonDarkImg} alt="Moonlight logo" />
+        </div>
       <div className="w-[625px] h-[300px] relative">
         <p className='font-RubikRegular text-[64px] text-darkNavy'>Welcome to the</p>
         <p className='font-RubikMedium font-bold text-[64px] text-darkNavy'>Frontend Quiz!</p>
