@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
-import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg} from '../utils/index.js'
+import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, bgDesktopDarkImg, bgDesktopLightImg} from '../utils/index.js'
 
-const QuizApp = () => {
+const QuizApp = ({ onToggleDarkMode }) => {
+
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
   const [currentQuiz, setCurrentQuiz] = useState(null);
@@ -56,16 +57,17 @@ const QuizApp = () => {
   };
 
   const darkLightMode = (e) => {
-    setIsDarkMode(!isDarkMode)
+    setIsDarkMode(!isDarkMode);
+    onToggleDarkMode();
   }
 
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
-      <button key={quiz.title} className="hover:border-violet duration-500 drop-shadow h-[96px] rounded-[24px] bg-white relative flex items-center border" onClick={() => handleStartQuiz(quiz.title)}>
+      <button key={quiz.title} className={`hover:border-violet duration-500 drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} onClick={() => handleStartQuiz(quiz.title)}>
         <div className='ml-[20px] h-[56px] w-[56px] flex flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
           <img src={`${imgQuiz[i]}`} alt="logo HTML"/>
         </div>
-        <p className='ml-[32px] font-RubikMedium h-[28px] w-[77px] text-3xl flex items-center w-[250px] text-left'>{quiz.title}</p>
+        <p className={`ml-[32px] font-RubikMedium h-[28px] w-[77px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
       </button>
     ));
   }
@@ -90,16 +92,16 @@ const QuizApp = () => {
   return (
     <div className="w-[1250px] h-[600px] flex justify-between relative">
       <div className='w-[128px] h-[28px] flex items-center justify-between absolute right-0 top-[-2.875rem]'>
-          <img src={sunDarkImg} alt="Sunlight logo" />
+          <img src={`${isDarkMode ? sunLightImg : sunDarkImg}`} alt="Sunlight logo" />
             <div className='h-[28px] w-[48px] bg-violet rounded-full flex items-center relative'>
               <div className={`transition-transform duration-300 h-[20px] w-[20px] bg-white rounded-full absolute cursor-pointer left-1 ${isDarkMode ? "translate-x-full" : "translate-x-0"}`} onClick={darkLightMode}></div>
             </div>
-          <img src={moonDarkImg} alt="Moonlight logo" />
+          <img src={`${isDarkMode ? moonLightImg : moonDarkImg}`} alt="Moonlight logo" />
         </div>
       <div className="w-[625px] h-[300px] relative">
-        <p className='font-RubikRegular text-[64px] text-darkNavy'>Welcome to the</p>
-        <p className='font-RubikMedium font-bold text-[64px] text-darkNavy'>Frontend Quiz!</p>
-        <p className='font-RubikRegular text-Body-M italic text-greyNavy absolute bottom-0'>Pick a subject to get started.</p>
+        <p className={`font-RubikRegular text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Welcome to the</p>
+        <p className={`font-RubikMedium font-bold text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Frontend Quiz!</p>
+        <p className={`font-RubikRegular text-Body-M italic absolute bottom-0 ${isDarkMode ? "text-white" : "text-greyNavy"}`}>Pick a subject to get started.</p>
       </div>
       <div className="h-full w-[575px] flex flex-col justify-between">
 
