@@ -13,7 +13,6 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedImgSrc, setSelectedImgSrc] = useState(null);
 
-
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
   useEffect(() => {
@@ -70,21 +69,36 @@ const QuizApp = ({ onToggleDarkMode }) => {
         className={`hover:border-violet duration-500 hover:border drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} 
         onClick={() => handleStartQuiz(quiz.title, imgQuiz[i])}
       >
-        <div className='ml-[20px] h-[56px] w-[56px] flex flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+        <div className='ml-[20px] h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
           <img src={`${imgQuiz[i]}`} alt="logo"/>        
         </div>
         <p className={`ml-[32px] font-RubikMedium h-[28px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
       </button>
     ));
   }
+
+  const buttonDarkLightMode = () => {
+    return (
+      <div className='w-[128px] h-[28px] flex items-center justify-between absolute right-0 top-[-2.875rem]'>
+          <img src={`${isDarkMode ? sunLightImg : sunDarkImg}`} alt="Sunlight logo" />
+            <div className='h-[28px] w-[48px] bg-violet rounded-full flex items-center relative'>
+              <div className={`transition-transform duration-300 h-[20px] w-[20px] bg-white rounded-full absolute cursor-pointer left-1 ${isDarkMode ? "translate-x-full" : "translate-x-0"}`} onClick={darkLightMode}></div>
+            </div>
+          <img src={`${isDarkMode ? moonLightImg : moonDarkImg}`} alt="Moonlight logo" />
+      </div>
+    )
+  }
   
 
   if (showQuiz && currentQuiz) {
     return (
-      <div className='w-[1160px] h-[705px] border border-black'>
-       <div className='w-[253px] h-[56px] border border-black'>
-        <img src={selectedImgSrc} alt="logo"/>
-        <div>Nom de l'image: </div>
+      <div className='w-[1250px] h-[600px] flex justify-between relative border border-black'>
+       {buttonDarkLightMode()}
+       <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
+        <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+          <img src={selectedImgSrc} alt="logo"/>
+        </div>
+        <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
       </div>
         <div>Timer: {timer}s</div>
         <div>{currentQuiz.questions[currentQuestionIndex].question}</div>
@@ -103,13 +117,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   return (
     <div className="w-[1250px] h-[600px] flex justify-between relative">
-      <div className='w-[128px] h-[28px] flex items-center justify-between absolute right-0 top-[-2.875rem]'>
-          <img src={`${isDarkMode ? sunLightImg : sunDarkImg}`} alt="Sunlight logo" />
-            <div className='h-[28px] w-[48px] bg-violet rounded-full flex items-center relative'>
-              <div className={`transition-transform duration-300 h-[20px] w-[20px] bg-white rounded-full absolute cursor-pointer left-1 ${isDarkMode ? "translate-x-full" : "translate-x-0"}`} onClick={darkLightMode}></div>
-            </div>
-          <img src={`${isDarkMode ? moonLightImg : moonDarkImg}`} alt="Moonlight logo" />
-        </div>
+      {buttonDarkLightMode()}
       <div className="w-[625px] h-[300px] relative">
         <p className={`font-RubikRegular text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Welcome to the</p>
         <p className={`font-RubikMedium font-bold text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Frontend Quiz!</p>
