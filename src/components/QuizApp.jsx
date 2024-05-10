@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
-import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, bgDesktopDarkImg, bgDesktopLightImg} from '../utils/index.js'
+import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, bgDesktopDarkImg, bgDesktopLightImg} from '../utils/index.js'
 
 const QuizApp = ({ onToggleDarkMode }) => {
 
@@ -12,7 +12,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg]
+  const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
   useEffect(() => {
     if (selectedQuizTitle) {
@@ -63,11 +63,11 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
-      <button key={quiz.title} className={`hover:border-violet duration-500 drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} onClick={() => handleStartQuiz(quiz.title)}>
+      <button key={quiz.title} className={`hover:border-violet duration-500 hover:border drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} onClick={() => handleStartQuiz(quiz.title)}>
         <div className='ml-[20px] h-[56px] w-[56px] flex flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
           <img src={`${imgQuiz[i]}`} alt="logo HTML"/>
         </div>
-        <p className={`ml-[32px] font-RubikMedium h-[28px] w-[77px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
+        <p className={`ml-[32px] font-RubikMedium h-[28px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
       </button>
     ));
   }

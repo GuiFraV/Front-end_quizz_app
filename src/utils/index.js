@@ -5,6 +5,7 @@ import error from "/images/icon-error.svg"
 import html from "/images/icon-html.svg"
 import incorrect from "/images/icon-incorrect.svg"
 import js from "/images/icon-js.svg"
+import jshard from "/images/icon-js-hard.svg"
 import moonDark from "/images/icon-moon-dark.svg"
 import moonLight from "/images/icon-moon-light.svg"
 import sunDark from "/images/icon-sun-dark.svg"
@@ -26,6 +27,7 @@ export const errorImg = error
 export const HTMLImg = html
 export const incorrectImg = incorrect
 export const JavaScriptImg = js
+export const JavaScriptHardImg = jshard
 export const moonDarkImg = moonDark
 export const moonLightImg = moonLight
 export const sunDarkImg = sunDark
