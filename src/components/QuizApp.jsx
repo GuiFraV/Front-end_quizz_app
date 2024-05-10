@@ -11,7 +11,8 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [quizLogo, setQuizLogo] = useState(null);
+  const [selectedImgSrc, setSelectedImgSrc] = useState(null);
+
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
@@ -30,9 +31,10 @@ const QuizApp = ({ onToggleDarkMode }) => {
     return () => clearInterval(timerId);
   }, [timer]);
 
-  const handleStartQuiz = (title) => {
+  const handleStartQuiz = (title, imgSrc) => {
     setSelectedQuizTitle(title);
     setShowQuiz(true);
+    setSelectedImgSrc(imgSrc); 
   };
 
   const handleAnswerClick = (answer) => {
@@ -62,30 +64,27 @@ const QuizApp = ({ onToggleDarkMode }) => {
     onToggleDarkMode();
   }
 
-  const setLogoQuizz = (e) => {
-    const imgSrc = e.target.src;
-    console.log(imgSrc)
-    const imgName = imgSrc.split('/').pop(); 
-    setQuizLogo(imgName);
-  }
-
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
-      <button key={quiz.title} className={`hover:border-violet duration-500 hover:border drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} onClick={() => handleStartQuiz(quiz.title)}>
+      <button key={quiz.title} 
+        className={`hover:border-violet duration-500 hover:border drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} 
+        onClick={() => handleStartQuiz(quiz.title, imgQuiz[i])}
+      >
         <div className='ml-[20px] h-[56px] w-[56px] flex flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
-          <img src={`${imgQuiz[i]}`} onClick={(e) => {e.stopPropagation(); setLogoQuizz(imgQuiz[i])}} alt="logo"/>        
+          <img src={`${imgQuiz[i]}`} alt="logo"/>        
         </div>
         <p className={`ml-[32px] font-RubikMedium h-[28px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
       </button>
     ));
   }
+  
 
   if (showQuiz && currentQuiz) {
     return (
       <div className='w-[1160px] h-[705px] border border-black'>
        <div className='w-[253px] h-[56px] border border-black'>
-        <img src={`${quizLogo}`} alt="logo"/>
-        <div>Nom de l'image: {quizLogo}</div>
+        <img src={selectedImgSrc} alt="logo"/>
+        <div>Nom de l'image: </div>
       </div>
         <div>Timer: {timer}s</div>
         <div>{currentQuiz.questions[currentQuestionIndex].question}</div>
@@ -100,6 +99,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
       </div>
     );
   }
+  
 
   return (
     <div className="w-[1250px] h-[600px] flex justify-between relative">
