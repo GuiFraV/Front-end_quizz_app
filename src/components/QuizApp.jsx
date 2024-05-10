@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
-import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, bgDesktopDarkImg, bgDesktopLightImg} from '../utils/index.js'
+import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg} from '../utils/index.js'
 
 const QuizApp = ({ onToggleDarkMode }) => {
 
@@ -11,6 +11,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [quizLogo, setQuizLogo] = useState(null);
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
@@ -61,11 +62,18 @@ const QuizApp = ({ onToggleDarkMode }) => {
     onToggleDarkMode();
   }
 
+  const setLogoQuizz = (e) => {
+    const imgSrc = e.target.src;
+    console.log(imgSrc)
+    const imgName = imgSrc.split('/').pop(); 
+    setQuizLogo(imgName);
+  }
+
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
       <button key={quiz.title} className={`hover:border-violet duration-500 hover:border drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} onClick={() => handleStartQuiz(quiz.title)}>
         <div className='ml-[20px] h-[56px] w-[56px] flex flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
-          <img src={`${imgQuiz[i]}`} alt="logo HTML"/>
+          <img src={`${imgQuiz[i]}`} onClick={(e) => {e.stopPropagation(); setLogoQuizz(imgQuiz[i])}} alt="logo"/>        
         </div>
         <p className={`ml-[32px] font-RubikMedium h-[28px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
       </button>
@@ -74,7 +82,11 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   if (showQuiz && currentQuiz) {
     return (
-      <div>
+      <div className='w-[1160px] h-[705px] border border-black'>
+       <div className='w-[253px] h-[56px] border border-black'>
+        <img src={`${quizLogo}`} alt="logo"/>
+        <div>Nom de l'image: {quizLogo}</div>
+      </div>
         <div>Timer: {timer}s</div>
         <div>{currentQuiz.questions[currentQuestionIndex].question}</div>
         <div>
