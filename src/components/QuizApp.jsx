@@ -100,15 +100,24 @@ const QuizApp = ({ onToggleDarkMode }) => {
         </div>
         <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
       </div>
-        <div>Timer: {timer}s</div>
-        <div>{currentQuiz.questions[currentQuestionIndex].question}</div>
-        <div>
-          {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-            <button key={index} onClick={() => handleAnswerClick(option)}>
-              {option}
-            </button>
-          ))}
+      <div className='w-[465px] h-[452px] border border-black flex flex-col justify-between'>
+        <p className='font-RubikItalic text-greyNavy text-Body-M'>Question {currentQuestionIndex} of {currentQuiz.questions.length}</p>
+        <div className='font-RubikMedium text-Heading-M text-darkNavy'>
+          {currentQuiz.questions[currentQuestionIndex].question}
         </div>
+          <div>Timer: {timer}s</div>
+      <div>
+        </div>
+
+        
+        </div>
+          <div className='border border-black'>
+            {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+              <button key={index} onClick={() => handleAnswerClick(option)}>
+                {option}
+              </button>
+            ))}
+          </div>
         <button onClick={handleSubmit} disabled={!selectedAnswer}>Valider la réponse</button>
       </div>
     );
