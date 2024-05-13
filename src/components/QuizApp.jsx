@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
 import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg} from '../utils/index.js'
+import ProgressBar from './ProgressBar.jsx';
 
 const QuizApp = ({ onToggleDarkMode }) => {
 
@@ -94,7 +95,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   if (showQuiz && currentQuiz) {
     return (
-      <div className='w-[1250px] h-[600px] flex justify-between relative border border-black'>
+      <div className='w-[1250px] h-[600px] flex justify-between relative'>
        {buttonDarkLightMode()}
        <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
         <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
@@ -102,18 +103,18 @@ const QuizApp = ({ onToggleDarkMode }) => {
         </div>
         <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
       </div>
-      <div className='w-[465px] h-[452px] border border-black flex flex-col justify-between'>
-        <p className='font-RubikItalic text-greyNavy text-Body-M'>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
+      <div className='w-[565px] h-full flex flex-col justify-around'>
+        <p className='font-RubikItalic text-greyNavy text-[15px]'>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
         <div className='font-RubikMedium text-Heading-M text-darkNavy'>
           {currentQuiz.questions[currentQuestionIndex].question}
         </div>
-          <div>Timer: {timer}s</div>
+        <ProgressBar timer={timer} />
       <div>
         </div>
 
         
         </div>
-          <div className='border border-black w-[575px] flex flex-col items-center justify-between'>
+          <div className=' w-[575px] flex flex-col items-center justify-between'>
             {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
               <button
                 className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center ${selectedOption === option ? 'border border-violet' : ''} ${isDarkMode ? "bg-greyNavy" : "bg-white"} font-RubikMedium text-Heading-S text-darkNavy group`} 
