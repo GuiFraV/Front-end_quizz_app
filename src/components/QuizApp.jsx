@@ -5,6 +5,9 @@ import ProgressBar from './ProgressBar.jsx';
 
 const QuizApp = ({ onToggleDarkMode }) => {
 
+  const correctEmoji = '✅'; 
+  const incorrectEmoji = '❌';
+
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
   const [currentQuiz, setCurrentQuiz] = useState(null);
@@ -14,6 +17,8 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedImgSrc, setSelectedImgSrc] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
@@ -38,27 +43,35 @@ const QuizApp = ({ onToggleDarkMode }) => {
     setSelectedImgSrc(imgSrc); 
   };
 
-  const handleAnswerClick = (answer) => {
-    setSelectedAnswer(answer);
-    setSelectedOption(answer);
+  const handleAnswerClick = (option) => {
+    const isCorrect = option === currentQuiz.questions[currentQuestionIndex].answer;
+    setSelectedAnswer(option);
+    setSelectedOption({ option, isCorrect });
   };
 
-  const handleSubmit = () => {
-    if (selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer) {
-      alert("Bonne réponse!");
-    } else {
-      alert("Mauvaise réponse!");
-    }
-
+  const handleNextQuestion = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
     if (nextQuestionIndex < currentQuiz.questions.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
       setSelectedAnswer(null);
+      setSelectedOption(null);
+      setIsAnswerSubmitted(false);
       setTimer(60);
     } else {
-      alert("Fin du quiz!");
-      setShowQuiz(false); 
+      alert('End of the quiz!');
+      setShowQuiz(false);
     }
+  };
+
+  const handleSubmit = () => {
+    if (!selectedAnswer) {
+      alert('Please select an answer');
+      return;
+    }
+    setIsAnswerSubmitted(true);
+  
+    const isCorrect = selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer;
+    setSelectedOption({ option: selectedAnswer, isCorrect: isCorrect });
   };
 
   const darkLightMode = (e) => {
@@ -92,44 +105,63 @@ const QuizApp = ({ onToggleDarkMode }) => {
     )
   }
   
-
   if (showQuiz && currentQuiz) {
     return (
       <div className='w-[1250px] h-[600px] flex justify-between relative'>
-       {buttonDarkLightMode()}
-       <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
-        <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
-          <img src={selectedImgSrc} alt="logo"/>
+        {buttonDarkLightMode()}
+        <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
+          <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+            <img src={selectedImgSrc} alt="logo"/>
+          </div>
+          <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
         </div>
-        <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
-      </div>
-      <div className='w-[565px] h-full flex flex-col justify-around'>
-        <p className='font-RubikItalic text-greyNavy text-[15px]'>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
-        <div className='font-RubikMedium text-Heading-M text-darkNavy'>
-          {currentQuiz.questions[currentQuestionIndex].question}
+        <div className='w-[565px] h-full flex flex-col justify-around'>
+          <p className='font-RubikItalic text-greyNavy text-[15px]'>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
+          <div className='font-RubikMedium text-Heading-M text-darkNavy'>
+            {currentQuiz.questions[currentQuestionIndex].question}
+          </div>
+          <ProgressBar timer={timer} />
         </div>
-        <ProgressBar timer={timer} />
-      <div>
-        </div>
-
-        
-        </div>
-          <div className=' w-[575px] flex flex-col items-center justify-between'>
-            {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+        <div className='w-[575px] flex flex-col items-center justify-between'>
+        {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+          <button
+            className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center ${isSubmitted && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-green-500' : 'border-red-500') : 'border-transparent'} ${isDarkMode ? "bg-greyNavy" : "bg-white"} font-RubikMedium text-Heading-S text-darkNavy group`} 
+            key={index} 
+            onClick={() => handleAnswerClick(option)}
+          >
+            <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 ${isSubmitted && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-green-500' : 'bg-red-500') : 'bg-[#F4F6FA]'}`}>
+              <p className={`${isSubmitted && selectedOption.option === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>
+              {isSubmitted && selectedOption.option === option && (
+                <img src={selectedOption.isCorrect ? correctEmoji : incorrectEmoji} alt="Result" className="absolute" />
+              )}
+            </div>
+            {option}
+          </button>
+        ))}
+          {isAnswerSubmitted && (
+            <div>
+              {selectedOption && selectedOption.isCorrect ? (
+                <div>Correct! {correctEmoji}</div>
+              ) : (
+                <div>Incorrect! The correct answer is: {currentQuiz.questions[currentQuestionIndex].answer}</div>
+              )}
               <button
-                className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center ${selectedOption === option ? 'border border-violet' : ''} ${isDarkMode ? "bg-greyNavy" : "bg-white"} font-RubikMedium text-Heading-S text-darkNavy group`} 
-                key={index} 
-                onClick={() => handleAnswerClick(option)}>
-                    <div className={` ${selectedOption !== option && 'group-hover:bg-[#F6E7FF]'} ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8  ${selectedOption === option ? 'bg-violet' : 'bg-[#F4F6FA]'}`}>
-                      <p className={`${selectedOption !== option && 'group-hover:text-violet'} ${selectedOption === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>        
-                    </div>
-                  {option}
+                className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+                onClick={handleNextQuestion}
+              >
+                Next Question
               </button>
-            ))}
+          </div>
+          )}
+          {!isAnswerSubmitted && (
             <button
               className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
-              onClick={handleSubmit} disabled={!selectedAnswer}>Submit Answer</button>
-          </div>
+              onClick={handleSubmit} disabled={!selectedAnswer}
+            >
+              Submit Answer
+            </button>
+          )}
+        </div>
       </div>
     );
   }
