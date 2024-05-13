@@ -12,6 +12,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [selectedImgSrc, setSelectedImgSrc] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
@@ -38,6 +39,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   const handleAnswerClick = (answer) => {
     setSelectedAnswer(answer);
+    setSelectedOption(answer);
   };
 
   const handleSubmit = () => {
@@ -101,7 +103,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
         <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
       </div>
       <div className='w-[465px] h-[452px] border border-black flex flex-col justify-between'>
-        <p className='font-RubikItalic text-greyNavy text-Body-M'>Question {currentQuestionIndex} of {currentQuiz.questions.length}</p>
+        <p className='font-RubikItalic text-greyNavy text-Body-M'>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
         <div className='font-RubikMedium text-Heading-M text-darkNavy'>
           {currentQuiz.questions[currentQuestionIndex].question}
         </div>
@@ -111,14 +113,22 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
         
         </div>
-          <div className='border border-black'>
+          <div className='border border-black w-[575px] flex flex-col items-center justify-between'>
             {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-              <button key={index} onClick={() => handleAnswerClick(option)}>
-                {option}
+              <button
+                className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center ${selectedOption === option ? 'border border-violet' : ''} ${isDarkMode ? "bg-greyNavy" : "bg-white"} font-RubikMedium text-Heading-S text-darkNavy group`} 
+                key={index} 
+                onClick={() => handleAnswerClick(option)}>
+                    <div className={` ${selectedOption !== option && 'group-hover:bg-[#F6E7FF]'} ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8  ${selectedOption === option ? 'bg-violet' : 'bg-[#F4F6FA]'}`}>
+                      <p className={`${selectedOption !== option && 'group-hover:text-violet'} ${selectedOption === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>        
+                    </div>
+                  {option}
               </button>
             ))}
+            <button
+              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+              onClick={handleSubmit} disabled={!selectedAnswer}>Submit Answer</button>
           </div>
-        <button onClick={handleSubmit} disabled={!selectedAnswer}>Valider la réponse</button>
       </div>
     );
   }
