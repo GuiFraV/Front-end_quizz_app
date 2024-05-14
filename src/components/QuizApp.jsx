@@ -56,22 +56,25 @@ const QuizApp = ({ onToggleDarkMode }) => {
     const isCorrect = option === currentQuiz.questions[currentQuestionIndex].answer;
     setSelectedAnswer(option);
     setSelectedOption({ option, isCorrect });
-    setIsSubmitted(true);
+    setIsSubmitted(true); 
   };
+
 
   const handleNextQuestion = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
     if (nextQuestionIndex < currentQuiz.questions.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
       setSelectedAnswer(null);
-      setSelectedOption(null); 
+      setSelectedOption(null);
       setIsAnswerSubmitted(false);
+      setIsSubmitted(false);
       setTimer(60);
     } else {
       alert('End of the quiz!');
       setShowQuiz(false);
     }
   };
+
 
   const handleSubmit = () => {
     if (!selectedAnswer) {
@@ -134,25 +137,33 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <ProgressBar timer={timer} />
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
-        {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+
+       {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
           <button
-            className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
-              ${isSubmitted && selectedOption && selectedOption.option === option ? 'border-violet' : 'border-transparent'} 
+            className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
+              ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
               ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
-              font-RubikMedium text-Heading-S text-darkNavy group 
-              hover:border-violet duration-500`} 
+              font-RubikMedium text-Heading-S text-darkNavy 
+              ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
             key={index} 
             onClick={() => handleAnswerClick(option)}
             disabled={isAnswerSubmitted}
           >
             <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 
-              ${isSubmitted && selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
-              hover:bg-violet duration-500`}>
-              <p className={`${isSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>
+              ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
+              ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
+              <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
+                ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}`}>
+                {["A","B","C","D","E"][index]}
+              </p>
             </div>
             {option}
           </button>
         ))}
+
+
+
+
           {isAnswerSubmitted && (
             <div>
               {selectedOption && selectedOption.isCorrect ? (

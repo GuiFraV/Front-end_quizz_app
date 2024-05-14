@@ -8,6 +8,7 @@ export default {
     extend: {
       colors: {
         violet: "#A729F5",
+        violetLight: "#F6E7FF",
         darkNavy : "#313E51",
         greyNavy : "#3B4D66",
         grey : "#626C7F",
