@@ -143,7 +143,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
      {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
         <button
-          className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
+          className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center text-left
             ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
             ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
             font-RubikMedium text-Heading-S text-darkNavy 
@@ -152,7 +152,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
           onClick={() => handleAnswerClick(option)}
           disabled={isAnswerSubmitted}
         >
-          <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 relative
+          <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-6 relative 
             ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
             ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
             <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
@@ -175,7 +175,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
 
             {isAnswerSubmitted && (
-              <div>
+              <div className='w-full'>
                 <button
                   className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
                   onClick={handleNextQuestion}
@@ -185,9 +185,9 @@ const QuizApp = ({ onToggleDarkMode }) => {
               </div>
             )}
             {!isAnswerSubmitted && (
-              <div>
+              <div className='w-full relative'>
                   {alertMessage && 
-                    <div className="text-red-500 mb-4 absolute bottom-[-70px] font-RubikRegular font-bold flex items-center">
+                    <div className="text-red-500 mb-4 absolute bottom-[-70px] left-1/3 font-RubikRegular font-bold flex items-center">
                       <img src={wrongImg} />
                       {alertMessage}
                     </div>}
