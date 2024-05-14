@@ -2,11 +2,9 @@ import { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
 import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, goodImg, wrongImg} from '../utils/index.js'
 import ProgressBar from './ProgressBar.jsx';
+import ScoreDisplay from './ScoreDisplay.jsx';
 
 const QuizApp = ({ onToggleDarkMode }) => {
-
-  const correctEmoji = '✅'; 
-  const incorrectEmoji = '❌';
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
@@ -20,6 +18,8 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [score, setScore] = useState(0);
+  const [showScore, setShowScore] = useState(false);
 
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
@@ -72,8 +72,8 @@ const QuizApp = ({ onToggleDarkMode }) => {
       setIsSubmitted(false);
       setTimer(60);
     } else {
-      alert('End of the quiz!');
       setShowQuiz(false);
+      setShowScore(true);
     }
   };
 
@@ -89,6 +89,25 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
     const isCorrect = selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer;
     setSelectedOption({ option: selectedAnswer, isCorrect: isCorrect });
+
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+  };
+
+  const handleRestartQuiz = () => {
+    setShowQuiz(false);
+    setShowScore(false);
+    setSelectedQuizTitle(null);
+    setCurrentQuiz(null);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setSelectedOption(null);
+    setIsSubmitted(false);
+    setIsAnswerSubmitted(false);
+    setAlertMessage('');
+    setScore(0);
+    setTimer(60);
   };
 
   const darkLightMode = (e) => {
@@ -141,76 +160,108 @@ const QuizApp = ({ onToggleDarkMode }) => {
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
 
-     {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-        <button
-          className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center text-left
-            ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
-            ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
-            font-RubikMedium text-Heading-S text-darkNavy 
-            ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
-          key={index} 
-          onClick={() => handleAnswerClick(option)}
-          disabled={isAnswerSubmitted}
-        >
-          <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-6 relative 
-            ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
-            ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
-            <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
-              ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}`}>
-              {["A","B","C","D","E"][index]}
-            </p>
+      {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+          <button
+            className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center text-left
+              ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
+              ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
+              font-RubikMedium text-Heading-S text-darkNavy 
+              ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
+            key={index} 
+            onClick={() => handleAnswerClick(option)}
+            disabled={isAnswerSubmitted}
+          >
+            <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-6 relative 
+              ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
+              ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
+              <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
+                ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}`}>
+                {["A","B","C","D","E"][index]}
+              </p>
+            </div>
+            {option}
+            {isAnswerSubmitted && selectedOption && selectedOption.option === option && (
+              <img className="absolute right-2" src={selectedOption.isCorrect ? goodImg : wrongImg} alt={selectedOption.isCorrect ? "Correct" : "Incorrect"} />
+            )}
+            {isAnswerSubmitted && !selectedOption.isCorrect && currentQuiz.questions[currentQuestionIndex].answer === option && (
+              <img className="absolute right-2" src={goodImg} alt="Correct" />
+            )}
+          </button>
+        ))}
+        {isAnswerSubmitted && (
+          <div className='w-full'>
+            <button
+              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+              onClick={handleNextQuestion}
+            >
+              Next Question
+            </button>
           </div>
-          {option}
-          {isAnswerSubmitted && selectedOption && selectedOption.option === option && (
-            <img className="absolute right-2" src={selectedOption.isCorrect ? goodImg : wrongImg} alt={selectedOption.isCorrect ? "Correct" : "Incorrect"} />
-          )}
-          {isAnswerSubmitted && !selectedOption.isCorrect && currentQuiz.questions[currentQuestionIndex].answer === option && (
-            <img className="absolute right-2" src={goodImg} alt="Correct" />
-          )}
-        </button>
-      ))}
-
-
-
-
-
-            {isAnswerSubmitted && (
-              <div className='w-full'>
-                <button
-                  className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
-                  onClick={handleNextQuestion}
-                >
-                  Next Question
-                </button>
-              </div>
-            )}
-            {!isAnswerSubmitted && (
-              <div className='w-full relative'>
-                  {alertMessage && 
-                    <div className="text-red-500 mb-4 absolute bottom-[-70px] left-1/3 font-RubikRegular font-bold flex items-center">
-                      <img src={wrongImg} />
-                      {alertMessage}
-                    </div>}
-                <button
-                  className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
-                  onClick={handleSubmit}
-                >
-                  Submit Answer
-                </button>
-              </div>
-            )}
-
-
-
-
-
-
-          
+        )}
+        {!isAnswerSubmitted && (
+          <div className='w-full relative'>
+              {alertMessage && 
+                <div className="text-red-500 mb-4 absolute bottom-[-70px] left-1/3 font-RubikRegular font-bold flex items-center">
+                  <img src={wrongImg} />
+                  {alertMessage}
+                </div>}
+            <button
+              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+              onClick={handleSubmit}
+            >
+              Submit Answer
+            </button>
+          </div>
+        )}          
         </div>
       </div>
     );
   }
-  
+
+  if (showScore) {
+    return (
+
+      <div className='w-[1250px] h-[600px] flex justify-between relative'>
+        {buttonDarkLightMode()}
+        <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
+          <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+            <img src={selectedImgSrc} alt="logo"/>
+          </div>
+          <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
+        </div>
+
+          <div className="w-[625px] h-[300px] relative">
+            <p className={`font-RubikRegular text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Quizz Completed</p>
+            <p className={`font-RubikMedium font-bold text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>You Scored ...</p>
+          </div>
+
+
+
+        <div className='w-[575px] h-[388px] flex flex-col items-center justify-between border drop-shadow bg-white rounded-[24px] relative'>
+          
+            <div className='w-[300px] h-[56px] flex items-center justify-center mt-8'>
+              <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+                <img src={selectedImgSrc} alt="logo"/>
+              </div>
+              <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
+            </div>
+          
+            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} />
+
+            <button
+              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S bottom-[-200px]' 
+              onClick={handleRestartQuiz}
+            >
+              Play Again
+            </button>
+        </div>
+      </div>
+    
+          
+          
+          
+      )
+  }
 
   return (
     <div className="w-[1250px] h-[600px] flex justify-between relative">
