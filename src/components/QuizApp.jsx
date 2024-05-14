@@ -19,6 +19,8 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
@@ -78,11 +80,12 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   const handleSubmit = () => {
     if (!selectedAnswer) {
-      alert('Please select an answer');
+      setAlertMessage('Please select an answer');
       return;
     }
     setIsAnswerSubmitted(true);
     setIsSubmitted(true); 
+    setAlertMessage('');
 
     const isCorrect = selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer;
     setSelectedOption({ option: selectedAnswer, isCorrect: isCorrect });
@@ -171,29 +174,38 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
 
 
-          {isAnswerSubmitted && (
-            <div>
-              {selectedOption && selectedOption.isCorrect ? (
-                <div>Correct! {correctEmoji}</div>
-              ) : (
-                <div>Incorrect! The correct answer is: {currentQuiz.questions[currentQuestionIndex].answer}</div>
-              )}
-              <button
-                className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
-                onClick={handleNextQuestion}
-              >
-                Next Question
-              </button>
-          </div>
-          )}
-          {!isAnswerSubmitted && (
-            <button
-              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
-              onClick={handleSubmit} disabled={!selectedAnswer}
-            >
-              Submit Answer
-            </button>
-          )}
+            {isAnswerSubmitted && (
+              <div>
+                <button
+                  className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+                  onClick={handleNextQuestion}
+                >
+                  Next Question
+                </button>
+              </div>
+            )}
+            {!isAnswerSubmitted && (
+              <div>
+                  {alertMessage && 
+                    <div className="text-red-500 mb-4 absolute bottom-[-70px] font-RubikRegular font-bold flex items-center">
+                      <img src={wrongImg} />
+                      {alertMessage}
+                    </div>}
+                <button
+                  className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+                  onClick={handleSubmit}
+                >
+                  Submit Answer
+                </button>
+              </div>
+            )}
+
+
+
+
+
+
+          
         </div>
       </div>
     );
