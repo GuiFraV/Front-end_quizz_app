@@ -22,9 +22,18 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
+  const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
   useEffect(() => {
     if (selectedQuizTitle) {
       const selectedQuiz = quizData.quizzes.find(quiz => quiz.title === selectedQuizTitle);
+      selectedQuiz.questions = shuffleArray(selectedQuiz.questions);
       setCurrentQuiz(selectedQuiz);
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
@@ -47,6 +56,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
     const isCorrect = option === currentQuiz.questions[currentQuestionIndex].answer;
     setSelectedAnswer(option);
     setSelectedOption({ option, isCorrect });
+    setIsSubmitted(true);
   };
 
   const handleNextQuestion = () => {
@@ -54,7 +64,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
     if (nextQuestionIndex < currentQuiz.questions.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
       setSelectedAnswer(null);
-      setSelectedOption(null);
+      setSelectedOption(null); // Réinitialisez selectedOption à null
       setIsAnswerSubmitted(false);
       setTimer(60);
     } else {
@@ -69,7 +79,8 @@ const QuizApp = ({ onToggleDarkMode }) => {
       return;
     }
     setIsAnswerSubmitted(true);
-  
+    setIsSubmitted(true); 
+
     const isCorrect = selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer;
     setSelectedOption({ option: selectedAnswer, isCorrect: isCorrect });
   };
@@ -123,21 +134,24 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <ProgressBar timer={timer} />
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
-        {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-          <button
-            className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center ${isSubmitted && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-green-500' : 'border-red-500') : 'border-transparent'} ${isDarkMode ? "bg-greyNavy" : "bg-white"} font-RubikMedium text-Heading-S text-darkNavy group`} 
-            key={index} 
-            onClick={() => handleAnswerClick(option)}
-          >
-            <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 ${isSubmitted && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-green-500' : 'bg-red-500') : 'bg-[#F4F6FA]'}`}>
-              <p className={`${isSubmitted && selectedOption.option === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>
-              {isSubmitted && selectedOption.option === option && (
-                <img src={selectedOption.isCorrect ? correctEmoji : incorrectEmoji} alt="Result" className="absolute" />
-              )}
-            </div>
-            {option}
-          </button>
-        ))}
+          {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+            <button
+              className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
+                ${isSubmitted && selectedOption && selectedOption.option === option ? 'border-violet' : 'border-transparent'} 
+                ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
+                font-RubikMedium text-Heading-S text-darkNavy group 
+                hover:border-violet duration-500`} 
+              key={index} 
+              onClick={() => handleAnswerClick(option)}
+            >
+              <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 
+                ${isSubmitted && selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
+                hover:bg-violet duration-500`}>
+                <p className={`${isSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>
+              </div>
+              {option}
+            </button>
+          ))}
           {isAnswerSubmitted && (
             <div>
               {selectedOption && selectedOption.isCorrect ? (
