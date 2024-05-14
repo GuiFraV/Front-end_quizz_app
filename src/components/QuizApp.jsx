@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import quizData from '../constants/data.json';
-import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg} from '../utils/index.js'
+import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, goodImg, wrongImg} from '../utils/index.js'
 import ProgressBar from './ProgressBar.jsx';
 
 const QuizApp = ({ onToggleDarkMode }) => {
@@ -138,28 +138,35 @@ const QuizApp = ({ onToggleDarkMode }) => {
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
 
-       {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-          <button
-            className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
-              ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
-              ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
-              font-RubikMedium text-Heading-S text-darkNavy 
-              ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
-            key={index} 
-            onClick={() => handleAnswerClick(option)}
-            disabled={isAnswerSubmitted}
-          >
-            <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 
-              ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
-              ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
-              <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
-                ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}`}>
-                {["A","B","C","D","E"][index]}
-              </p>
-            </div>
-            {option}
-          </button>
-        ))}
+     {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+        <button
+          className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
+            ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
+            ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
+            font-RubikMedium text-Heading-S text-darkNavy 
+            ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
+          key={index} 
+          onClick={() => handleAnswerClick(option)}
+          disabled={isAnswerSubmitted}
+        >
+          <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 relative
+            ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
+            ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
+            <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
+              ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}`}>
+              {["A","B","C","D","E"][index]}
+            </p>
+          </div>
+          {option}
+          {isAnswerSubmitted && selectedOption && selectedOption.option === option && (
+            <img className="absolute right-2" src={selectedOption.isCorrect ? goodImg : wrongImg} alt={selectedOption.isCorrect ? "Correct" : "Incorrect"} />
+          )}
+          {isAnswerSubmitted && !selectedOption.isCorrect && currentQuiz.questions[currentQuestionIndex].answer === option && (
+            <img className="absolute right-2" src={goodImg} alt="Correct" />
+          )}
+        </button>
+      ))}
+
 
 
 

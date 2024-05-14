@@ -10,6 +10,8 @@ import moonDark from "/images/icon-moon-dark.svg"
 import moonLight from "/images/icon-moon-light.svg"
 import sunDark from "/images/icon-sun-dark.svg"
 import sunLight from "/images/icon-sun-light.svg"
+import good from "/images/fluent_checkmark-circle-16-regular.svg"
+import wrong from "/images/fluent_dismiss-circle-16-regular.svg"
 
 import bgDesktopDark from "/images/pattern-background-desktop-dark.svg"
 import bgDesktopLight from "/images/pattern-background-desktop-light.svg"
@@ -38,3 +40,5 @@ export const bgMobileDarkImg = bgMobileDark
 export const bgMobileLightImg = bgMobileLight
 export const bgTabletDarkImg = bgTabletDark
 export const bgTabletLightImg = bgTabletLight
+export const goodImg = good
+export const wrongImg = wrong
