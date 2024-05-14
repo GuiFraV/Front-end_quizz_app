@@ -64,7 +64,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
     if (nextQuestionIndex < currentQuiz.questions.length) {
       setCurrentQuestionIndex(nextQuestionIndex);
       setSelectedAnswer(null);
-      setSelectedOption(null); // Réinitialisez selectedOption à null
+      setSelectedOption(null); 
       setIsAnswerSubmitted(false);
       setTimer(60);
     } else {
@@ -134,24 +134,25 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <ProgressBar timer={timer} />
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
-          {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
-            <button
-              className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
-                ${isSubmitted && selectedOption && selectedOption.option === option ? 'border-violet' : 'border-transparent'} 
-                ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
-                font-RubikMedium text-Heading-S text-darkNavy group 
-                hover:border-violet duration-500`} 
-              key={index} 
-              onClick={() => handleAnswerClick(option)}
-            >
-              <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 
-                ${isSubmitted && selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
-                hover:bg-violet duration-500`}>
-                <p className={`${isSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>
-              </div>
-              {option}
-            </button>
-          ))}
+        {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+          <button
+            className={`drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center 
+              ${isSubmitted && selectedOption && selectedOption.option === option ? 'border-violet' : 'border-transparent'} 
+              ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
+              font-RubikMedium text-Heading-S text-darkNavy group 
+              hover:border-violet duration-500`} 
+            key={index} 
+            onClick={() => handleAnswerClick(option)}
+            disabled={isAnswerSubmitted}
+          >
+            <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-8 
+              ${isSubmitted && selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
+              hover:bg-violet duration-500`}>
+              <p className={`${isSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'}`}>{["A","B","C","D","E"][index]}</p>
+            </div>
+            {option}
+          </button>
+        ))}
           {isAnswerSubmitted && (
             <div>
               {selectedOption && selectedOption.isCorrect ? (
