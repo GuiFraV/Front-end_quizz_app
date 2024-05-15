@@ -9,12 +9,12 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   const isMobile = useMediaQuery({ query: '(max-width: 374px)' });
   const isTablet = useMediaQuery({ query: '(min-width: 375px) and (max-width: 768px)' });
-  const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
+  // const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
   const [currentQuiz, setCurrentQuiz] = useState(null);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(10);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -25,7 +25,6 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
-
 
   const imgQuiz = [HTMLImg, CSSImg, JavaScriptImg, AccessibilityImg, JavaScriptHardImg]
 
@@ -44,13 +43,17 @@ const QuizApp = ({ onToggleDarkMode }) => {
       setCurrentQuiz(selectedQuiz);
       setCurrentQuestionIndex(0);
       setSelectedAnswer(null);
-      setTimer(60);
+      setTimer(10);
     }
   }, [selectedQuizTitle]);
 
   useEffect(() => {
-    const timerId = timer > 0 && setInterval(() => setTimer(timer - 1), 1000);
-    return () => clearInterval(timerId);
+    if (timer > 0) {
+      const timerId = setInterval(() => setTimer(timer - 1), 1000);
+      return () => clearInterval(timerId);
+    } else {
+      handleNextQuestion();
+    }
   }, [timer]);
 
   const handleStartQuiz = (title, imgSrc) => {
@@ -66,7 +69,6 @@ const QuizApp = ({ onToggleDarkMode }) => {
     setIsSubmitted(true); 
   };
 
-
   const handleNextQuestion = () => {
     const nextQuestionIndex = currentQuestionIndex + 1;
     if (nextQuestionIndex < currentQuiz.questions.length) {
@@ -75,13 +77,12 @@ const QuizApp = ({ onToggleDarkMode }) => {
       setSelectedOption(null);
       setIsAnswerSubmitted(false);
       setIsSubmitted(false);
-      setTimer(60);
+      setTimer(10);
     } else {
       setShowQuiz(false);
       setShowScore(true);
     }
   };
-
 
   const handleSubmit = () => {
     if (!selectedAnswer) {
@@ -112,7 +113,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
     setIsAnswerSubmitted(false);
     setAlertMessage('');
     setScore(0);
-    setTimer(60);
+    setTimer(10);
   };
 
   const darkLightMode = (e) => {
@@ -276,7 +277,6 @@ const QuizApp = ({ onToggleDarkMode }) => {
       </div> 
       )
   }
-
   return (
     <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"} ${isMobile ? "w-[300px] flex-col items-center" : ""}`}>
       {buttonDarkLightMode()}

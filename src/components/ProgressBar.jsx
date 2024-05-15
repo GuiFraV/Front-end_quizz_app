@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProgressBar = ({ timer, isMobile }) => {
-  const width = (timer / 60) * 100;
+  const width = (timer / 10) * 100;
 
   return (
     <div className={` bg-gray-200 rounded-full h-2 ${isMobile ? "w-[95%]" : "w-full"}`}>
