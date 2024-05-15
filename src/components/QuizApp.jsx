@@ -3,8 +3,13 @@ import quizData from '../constants/data.json';
 import {AccessibilityImg, CSSImg, HTMLImg, JavaScriptImg, JavaScriptHardImg, sunLightImg, sunDarkImg, moonLightImg, moonDarkImg, goodImg, wrongImg} from '../utils/index.js'
 import ProgressBar from './ProgressBar.jsx';
 import ScoreDisplay from './ScoreDisplay.jsx';
+import { useMediaQuery } from 'react-responsive';
 
 const QuizApp = ({ onToggleDarkMode }) => {
+
+  const isMobile = useMediaQuery({ query: '(max-width: 374px)' });
+  const isTablet = useMediaQuery({ query: '(min-width: 375px) and (max-width: 768px)' });
+  const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
@@ -118,7 +123,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
       <button key={quiz.title} 
-        className={`hover:border-violet duration-500 hover:border drop-shadow h-[96px] rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"}`} 
+        className={`hover:border-violet duration-500 hover:border drop-shadow rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"} ${isTablet ? "h-[80px] mb-4" : "h-[96px]"}`} 
         onClick={() => handleStartQuiz(quiz.title, imgQuiz[i])}
       >
         <div className='ml-[20px] h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
@@ -143,16 +148,9 @@ const QuizApp = ({ onToggleDarkMode }) => {
   
   if (showQuiz && currentQuiz) {
     return (
-      <div className='xl:w-[1250px] h-[600px] flex justify-between relative'>
+      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[768px]" : "w-[1250px]"}`}>
         {buttonDarkLightMode()}
-
-
-
-
         <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
-
-
-
           <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
@@ -267,12 +265,12 @@ const QuizApp = ({ onToggleDarkMode }) => {
   }
 
   return (
-    <div className="w-[1250px] h-[600px] flex justify-between relative">
+    <div className={`w-[1250px] h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"}`}>
       {buttonDarkLightMode()}
-      <div className="w-[625px] h-[300px] relative">
-        <p className={`font-RubikRegular text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Welcome to the</p>
-        <p className={`font-RubikMedium font-bold text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Frontend Quiz!</p>
-        <p className={`font-RubikRegular text-Body-M italic absolute bottom-0 ${isDarkMode ? "text-white" : "text-greyNavy"}`}>Pick a subject to get started.</p>
+      <div className={`w-[625px] h-[300px] relative ${isTablet ? "pl-8" : ""} `}>
+        <p className={`font-RubikRegular ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[52px]" : "text-[64px]"} `}>Welcome to the</p>
+        <p className={`font-RubikMedium font-bold ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[52px] mb-4" : "text-[64px]"}  `}>Frontend Quiz!</p>
+        <p className={`font-RubikRegular text-Body-M italic absolute bottom-0 ${isDarkMode ? "text-white" : "text-greyNavy"} ${isTablet ? "mb-2" : ""}`}>Pick a subject to get started.</p>
       </div>
       <div className="h-full w-[575px] flex flex-col justify-between">
 
