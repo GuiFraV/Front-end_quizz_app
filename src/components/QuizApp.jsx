@@ -145,11 +145,18 @@ const QuizApp = ({ onToggleDarkMode }) => {
     return (
       <div className='xl:w-[1250px] h-[600px] flex justify-between relative'>
         {buttonDarkLightMode()}
-        <div className='w-[300px] h-[56px] md:flex-col flex items-center absolute left-0 top-[-3.875rem]'>
+
+
+
+
+        <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
+
+
+
           <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
-          <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
+          <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
         </div>
         <div className='w-[565px] h-full flex flex-col justify-around'>
           <p className={`font-RubikItalic text-[15px] ${isDarkMode ? "text-[#ABC1E1]" : "text-greyNavy "}`}>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
