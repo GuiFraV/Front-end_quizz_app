@@ -3,7 +3,7 @@ import { useTexture } from '@react-three/drei';
 
 import {starsImg} from '../utils/index.js';
 
-export default function Stars({ count = 5000, size = 0.02 }) {
+export default function Stars({ count = 5000, size = 0.2 }) {
   const texture = useTexture(starsImg);
   const starsRef = useRef();
 
@@ -22,7 +22,7 @@ export default function Stars({ count = 5000, size = 0.02 }) {
   }, [count]);
 
   const animate = (time) => {
-    starsRef.current.rotation.y += 0.00025;
+    starsRef.current.rotation.y += 0.000025;
     requestAnimationFrame(animate);
   };
 
