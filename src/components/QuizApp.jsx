@@ -7,8 +7,8 @@ import { useMediaQuery } from 'react-responsive';
 
 const QuizApp = ({ onToggleDarkMode }) => {
 
-  const isMobile = useMediaQuery({ query: '(max-width: 374px)' });
-  const isTablet = useMediaQuery({ query: '(min-width: 375px) and (max-width: 1280px)' });
+  const isMobile = useMediaQuery({ query: '(max-width: 701px)' });
+  const isTablet = useMediaQuery({ query: '(min-width: 702px) and (max-width: 1280px)' });
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
