@@ -148,17 +148,17 @@ const QuizApp = ({ onToggleDarkMode }) => {
   
   if (showQuiz && currentQuiz) {
     return (
-      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[768px]" : "w-[1250px]"}`}>
+      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"} `}>
         {buttonDarkLightMode()}
         <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
-          <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+          <div className={`h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isTablet ? "ml-16" : ""}`}>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
           <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
         </div>
         <div className='w-[565px] h-full flex flex-col justify-around'>
-          <p className={`font-RubikItalic text-[15px] ${isDarkMode ? "text-[#ABC1E1]" : "text-greyNavy "}`}>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
-          <div className={`font-RubikMedium text-Heading-M ${isDarkMode ? "text-white" : "text-darkNavy"}`}>
+          <p className={`font-RubikItalic ${isDarkMode ? "text-[#ABC1E1]" : "text-greyNavy "} ${isTablet ? "text-[12px]" : "text-[15px]"}`}>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
+          <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[20px]" : "text-Heading-M"}`}>
             {currentQuiz.questions[currentQuestionIndex].question}
           </div>
           <ProgressBar timer={timer} />
@@ -167,11 +167,13 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
         {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
           <button
-            className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center text-left
+            className={`group drop-shadow w-full rounded-[24px] relative flex items-center text-left
               ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
               ${isDarkMode ? "bg-greyNavy text-white" : "bg-white text-darkNavy"} 
-              font-RubikMedium text-Heading-S
-              ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
+              font-RubikMedium 
+              ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}
+              ${isTablet ? "h-[80px] text-[20px] mb-4" : "h-[96px] text-Heading-S"}
+              `} 
             key={index} 
             onClick={() => handleAnswerClick(option)}
             disabled={isAnswerSubmitted}
@@ -196,8 +198,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
         {isAnswerSubmitted && (
           <div className='w-full'>
             <button
-              className='hover:opacity-70 drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
-              onClick={handleNextQuestion}
+              className={`hover:opacity-70 drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S ${isTablet ? "h-[80px]" : "h-[96px]"}`}               onClick={handleNextQuestion}
             >
               Next Question
             </button>
@@ -211,7 +212,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
                   {alertMessage}
                 </div>}
             <button
-              className='hover:opacity-70 drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+              className={`hover:opacity-70 drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S ${isTablet ? "h-[80px]" : "h-[96px]"}`} 
               onClick={handleSubmit}
             >
               Submit Answer
@@ -226,35 +227,37 @@ const QuizApp = ({ onToggleDarkMode }) => {
   if (showScore) {
     return (
 
-      <div className='w-[1250px] h-[600px] flex justify-between relative'>
+      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"}`}>
         {buttonDarkLightMode()}
         <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
-          <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+          <div className={`h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isTablet ? "ml-16" : ""}`}>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
           <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
         </div>
 
-          <div className="w-[625px] h-[300px] relative">
-            <p className={`font-RubikRegular text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>Quizz Completed</p>
-            <p className={`font-RubikMedium font-bold text-[64px] ${isDarkMode ? "text-white" : "text-darkNavy"}`}>You Scored ...</p>
+          <div className={`w-[625px] h-[300px] relative ${isTablet ? "ml-16" : ""}`}>
+            <p className={`font-RubikRegular ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[50px]" : "text-[64px] "}`}>Quizz Completed</p>
+            <p className={`font-RubikMedium font-bold ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[50px]" : "text-[64px] "}`}>You Scored ...</p>
           </div>
 
 
 
-        <div className={`w-[575px] h-[388px] flex flex-col items-center justify-between drop-shadow  ${isDarkMode ? "bg-[#3B4D66]" : "bg-white"} rounded-[24px] relative`}>
+        <div className={`w-[575px] h-[388px] flex flex-col items-center justify-between drop-shadow  ${isDarkMode ? "bg-[#3B4D66]" : "bg-white"} rounded-[24px] relative ${isTablet ? "mb-12" : ""}`}>
           
             <div className='w-[300px] h-[56px] flex items-center justify-center mt-8'>
               <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
                 <img src={selectedImgSrc} alt="logo"/>
               </div>
-              <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
+              <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>
+                {selectedQuizTitle}
+              </div>
             </div>
           
-            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} isDarkMode={isDarkMode} />
+            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} isDarkMode={isDarkMode} isTablet={isTablet} />
 
             <button
-              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S bottom-[-200px]' 
+              className={`hover:opacity-70 hover:border drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S  ${isTablet ? "bottom-[-110px] h-[80px]" : "bottom-[-200px] h-[96px]"}` }
               onClick={handleRestartQuiz}
             >
               Play Again
