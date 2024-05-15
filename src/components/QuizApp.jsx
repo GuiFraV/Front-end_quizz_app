@@ -9,12 +9,12 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
   const isMobile = useMediaQuery({ query: '(max-width: 374px)' });
   const isTablet = useMediaQuery({ query: '(min-width: 375px) and (max-width: 768px)' });
-  // const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
+  const isDesktop = useMediaQuery({ query: '(min-width: 769px)' });
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
   const [currentQuiz, setCurrentQuiz] = useState(null);
-  const [timer, setTimer] = useState(10);
+  const [timer, setTimer] = useState(10); // Initial timer set to 10 seconds
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -39,12 +39,12 @@ const QuizApp = ({ onToggleDarkMode }) => {
   useEffect(() => {
     if (selectedQuizTitle) {
       const selectedQuiz = quizData.quizzes.find(quiz => quiz.title === selectedQuizTitle);
-      if(selectedQuiz){
+      if (selectedQuiz) {
         selectedQuiz.questions = shuffleArray(selectedQuiz.questions);
         setCurrentQuiz(selectedQuiz);
         setCurrentQuestionIndex(0);
         setSelectedAnswer(null);
-        setTimer(10);
+        setTimer(10); // Reset timer to 10 seconds
       }
     }
   }, [selectedQuizTitle]);
@@ -65,24 +65,28 @@ const QuizApp = ({ onToggleDarkMode }) => {
   };
 
   const handleAnswerClick = (option) => {
-    const isCorrect = option === currentQuiz.questions[currentQuestionIndex].answer;
-    setSelectedAnswer(option);
-    setSelectedOption({ option, isCorrect });
-    setIsSubmitted(true); 
+    if (currentQuiz) {
+      const isCorrect = option === currentQuiz.questions[currentQuestionIndex].answer;
+      setSelectedAnswer(option);
+      setSelectedOption({ option, isCorrect });
+      setIsSubmitted(true); 
+    }
   };
 
   const handleNextQuestion = () => {
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    if (nextQuestionIndex < currentQuiz.questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-      setSelectedAnswer(null);
-      setSelectedOption(null);
-      setIsAnswerSubmitted(false);
-      setIsSubmitted(false);
-      setTimer(10);
-    } else {
-      setShowQuiz(false);
-      setShowScore(true);
+    if (currentQuiz) {
+      const nextQuestionIndex = currentQuestionIndex + 1;
+      if (nextQuestionIndex < currentQuiz.questions.length) {
+        setCurrentQuestionIndex(nextQuestionIndex);
+        setSelectedAnswer(null);
+        setSelectedOption(null);
+        setIsAnswerSubmitted(false);
+        setIsSubmitted(false);
+        setTimer(10); // Reset timer to 10 seconds
+      } else {
+        setShowQuiz(false);
+        setShowScore(true);
+      }
     }
   };
 
@@ -95,11 +99,13 @@ const QuizApp = ({ onToggleDarkMode }) => {
     setIsSubmitted(true); 
     setAlertMessage('');
 
-    const isCorrect = selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer;
-    setSelectedOption({ option: selectedAnswer, isCorrect: isCorrect });
+    if (currentQuiz) {
+      const isCorrect = selectedAnswer === currentQuiz.questions[currentQuestionIndex].answer;
+      setSelectedOption({ option: selectedAnswer, isCorrect: isCorrect });
 
-    if (isCorrect) {
-      setScore(score + 1);
+      if (isCorrect) {
+        setScore(score + 1);
+      }
     }
   };
 
@@ -115,7 +121,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
     setIsAnswerSubmitted(false);
     setAlertMessage('');
     setScore(0);
-    setTimer(10);
+    setTimer(10); // Reset timer to 10 seconds
   };
 
   const darkLightMode = (e) => {
@@ -164,6 +170,11 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[20px]" : "text-Heading-M"} ${isMobile ? "text-[15px] ml-2" : ""}`}>
             {currentQuiz.questions[currentQuestionIndex].question}
           </div>
+          {currentQuiz.questions[currentQuestionIndex].code && (
+            <pre className={`bg-gray-200 p-4 rounded ${isDarkMode ? "bg-gray-800 text-white" : "bg-gray-200 text-black"}`}>
+              <code>{currentQuiz.questions[currentQuestionIndex].code}</code>
+            </pre>
+          )}
           <div className='w-full flex justify-center align-center'>
             <ProgressBar timer={timer} isMobile={isMobile} />
           </div>
@@ -178,8 +189,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
               font-RubikMedium 
               ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}
               ${isTablet ? "h-[80px] text-[20px] mb-4" : "h-[96px] text-Heading-S"}
-              ${isMobile ? "w-[290px] h-[64px] mb-4 rounded-[12px]" : "rounded-[24px]"}
-              `} 
+              ${isMobile ? "w-[290px] h-[64px] mb-4 rounded-[12px]" : "rounded-[24px]"}`}
             key={index} 
             onClick={() => handleAnswerClick(option)}
             disabled={isAnswerSubmitted}
@@ -187,12 +197,10 @@ const QuizApp = ({ onToggleDarkMode }) => {
             <div className={`ml-[20px] flex items-center justify-center rounded-[8px] mr-6 relative 
               ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
               ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}
-              ${isMobile ? "h-[40px] w-[40px]" : "h-[56px] w-[56px]"}
-              `}>
+              ${isMobile ? "h-[40px] w-[40px]" : "h-[56px] w-[56px]"}`}>
               <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
                 ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}
-                ${isMobile ? "text-[20px]" : ""}
-                `}>
+                ${isMobile ? "text-[20px]" : ""}`}>
                 {["A","B","C","D","E"][index]}
               </p>
             </div>
