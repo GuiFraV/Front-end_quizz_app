@@ -39,11 +39,13 @@ const QuizApp = ({ onToggleDarkMode }) => {
   useEffect(() => {
     if (selectedQuizTitle) {
       const selectedQuiz = quizData.quizzes.find(quiz => quiz.title === selectedQuizTitle);
-      selectedQuiz.questions = shuffleArray(selectedQuiz.questions);
-      setCurrentQuiz(selectedQuiz);
-      setCurrentQuestionIndex(0);
-      setSelectedAnswer(null);
-      setTimer(10);
+      if(selectedQuiz){
+        selectedQuiz.questions = shuffleArray(selectedQuiz.questions);
+        setCurrentQuiz(selectedQuiz);
+        setCurrentQuestionIndex(0);
+        setSelectedAnswer(null);
+        setTimer(10);
+      }
     }
   }, [selectedQuizTitle]);
 
