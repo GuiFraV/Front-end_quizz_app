@@ -152,20 +152,20 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
         </div>
         <div className='w-[565px] h-full flex flex-col justify-around'>
-          <p className='font-RubikItalic text-greyNavy text-[15px]'>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
-          <div className='font-RubikMedium text-Heading-M text-darkNavy'>
+          <p className={`font-RubikItalic text-[15px] ${isDarkMode ? "text-[#ABC1E1]" : "text-greyNavy "}`}>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
+          <div className={`font-RubikMedium text-Heading-M ${isDarkMode ? "text-white" : "text-darkNavy"}`}>
             {currentQuiz.questions[currentQuestionIndex].question}
           </div>
           <ProgressBar timer={timer} />
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
 
-      {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
+        {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
           <button
             className={`group drop-shadow h-[96px] w-full rounded-[24px] relative flex items-center text-left
               ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
-              ${isDarkMode ? "bg-greyNavy" : "bg-white"} 
-              font-RubikMedium text-Heading-S text-darkNavy 
+              ${isDarkMode ? "bg-greyNavy text-white" : "bg-white text-darkNavy"} 
+              font-RubikMedium text-Heading-S
               ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}`} 
             key={index} 
             onClick={() => handleAnswerClick(option)}
@@ -191,7 +191,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
         {isAnswerSubmitted && (
           <div className='w-full'>
             <button
-              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+              className='hover:opacity-70 drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
               onClick={handleNextQuestion}
             >
               Next Question
@@ -206,7 +206,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
                   {alertMessage}
                 </div>}
             <button
-              className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
+              className='hover:opacity-70 drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S' 
               onClick={handleSubmit}
             >
               Submit Answer
@@ -227,7 +227,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
-          <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
+          <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
         </div>
 
           <div className="w-[625px] h-[300px] relative">
@@ -237,16 +237,16 @@ const QuizApp = ({ onToggleDarkMode }) => {
 
 
 
-        <div className='w-[575px] h-[388px] flex flex-col items-center justify-between border drop-shadow bg-white rounded-[24px] relative'>
+        <div className={`w-[575px] h-[388px] flex flex-col items-center justify-between drop-shadow  ${isDarkMode ? "bg-[#3B4D66]" : "bg-white"} rounded-[24px] relative`}>
           
             <div className='w-[300px] h-[56px] flex items-center justify-center mt-8'>
               <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
                 <img src={selectedImgSrc} alt="logo"/>
               </div>
-              <div className='font-RubikMedium text-darkNavy text-2xl ml-4'>{selectedQuizTitle}</div>
+              <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
             </div>
           
-            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} />
+            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} isDarkMode={isDarkMode} />
 
             <button
               className='hover:opacity-70 hover:border drop-shadow bg-violet text-white h-[96px] w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S bottom-[-200px]' 
