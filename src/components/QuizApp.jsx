@@ -123,13 +123,13 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const buttonQuiz = () => {
     return quizData.quizzes.map((quiz, i) => (
       <button key={quiz.title} 
-        className={`hover:border-violet duration-500 hover:border drop-shadow rounded-[24px] relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"} ${isTablet ? "h-[80px] mb-4" : "h-[96px]"}`} 
+        className={`hover:border-violet duration-500 hover:border drop-shadow relative flex items-center ${isDarkMode ? "bg-greyNavy" : "bg-white"} ${isTablet ? "h-[80px] mb-4" : "h-[96px]"} ${isMobile ? "h-[54px] w-[260px] rounded-[12px]" : "rounded-[24px]"}`} 
         onClick={() => handleStartQuiz(quiz.title, imgQuiz[i])}
       >
-        <div className='ml-[20px] h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+        <div className={`ml-[20px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isMobile ? "h-[40px] w-[40px]" : "h-[56px] w-[56px]"}`}>
           <img src={`${imgQuiz[i]}`} alt="logo"/>        
         </div>
-        <p className={`ml-[32px] font-RubikMedium h-[28px] text-3xl flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"}`}>{quiz.title}</p>
+        <p className={`ml-[32px] font-RubikMedium h-[28px] flex items-center w-[250px] text-left ${isDarkMode ? "text-white" : "text-black"} ${isMobile ? "text-sm" : "text-3xl"}`}>{quiz.title}</p>
       </button>
     ));
   }
@@ -148,45 +148,54 @@ const QuizApp = ({ onToggleDarkMode }) => {
   
   if (showQuiz && currentQuiz) {
     return (
-      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"} `}>
+      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"} ${isMobile ? "w-[300px] flex-col items-center" : ""} `}>
         {buttonDarkLightMode()}
         <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
-          <div className={`h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isTablet ? "ml-16" : ""}`}>
+          <div className={`h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isTablet ? "ml-16" : ""} ${isMobile ? "ml-2" : ""}`}>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
           <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
         </div>
-        <div className='w-[565px] h-full flex flex-col justify-around'>
-          <p className={`font-RubikItalic ${isDarkMode ? "text-[#ABC1E1]" : "text-greyNavy "} ${isTablet ? "text-[12px]" : "text-[15px]"}`}>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
-          <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[20px]" : "text-Heading-M"}`}>
+        <div className={`h-full flex flex-col justify-around ${isMobile ? "w-full" : "w-[565px] "}`}>
+          <p className={`font-RubikItalic ${isDarkMode ? "text-[#ABC1E1]" : "text-greyNavy "} ${isTablet ? "text-[12px]" : "text-[15px]"} ${isMobile ? "text-[12px] ml-2" : ""}`}>Question {currentQuestionIndex + 1} of {currentQuiz.questions.length}</p>
+          <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[20px]" : "text-Heading-M"} ${isMobile ? "text-[15px] ml-2" : ""}`}>
             {currentQuiz.questions[currentQuestionIndex].question}
           </div>
-          <ProgressBar timer={timer} />
+          <div className='w-full flex justify-center align-center'>
+            <ProgressBar timer={timer} isMobile={isMobile} />
+          </div>
         </div>
         <div className='w-[575px] flex flex-col items-center justify-between'>
 
         {currentQuiz.questions[currentQuestionIndex].options.map((option, index) => (
           <button
-            className={`group drop-shadow w-full rounded-[24px] relative flex items-center text-left
+            className={`group drop-shadow w-full relative flex items-center text-left
               ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'border-2 border-[#26D782]' : 'border-2 border-red-500') : selectedOption && selectedOption.option === option ? 'border-2 border-violet' : 'border-transparent'} 
               ${isDarkMode ? "bg-greyNavy text-white" : "bg-white text-darkNavy"} 
               font-RubikMedium 
               ${!isAnswerSubmitted ? 'hover:border-violet transition duration-500' : ''}
               ${isTablet ? "h-[80px] text-[20px] mb-4" : "h-[96px] text-Heading-S"}
+              ${isMobile ? "w-[290px] h-[64px] mb-4 rounded-[12px]" : "rounded-[24px]"}
               `} 
             key={index} 
             onClick={() => handleAnswerClick(option)}
             disabled={isAnswerSubmitted}
           >
-            <div className={`ml-[20px] h-[56px] w-[56px] flex items-center justify-center rounded-[8px] mr-6 relative 
+            <div className={`ml-[20px] flex items-center justify-center rounded-[8px] mr-6 relative 
               ${isAnswerSubmitted && selectedOption && selectedOption.option === option ? (selectedOption.isCorrect ? 'bg-[#26D782]' : 'bg-red-500') : selectedOption && selectedOption.option === option ? 'bg-violet' : 'bg-[#F4F6FA]'} 
-              ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}`}>
+              ${!isAnswerSubmitted ? 'group-hover:bg-violetLight transition duration-500' : ''}
+              ${isMobile ? "h-[40px] w-[40px]" : "h-[56px] w-[56px]"}
+              `}>
               <p className={`${isAnswerSubmitted && selectedOption && selectedOption.option === option ? 'text-white' : selectedOption && selectedOption.option === option ? 'text-white' : 'text-greyNavy'} 
-                ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}`}>
+                ${!isAnswerSubmitted ? 'group-hover:text-violet transition duration-500' : ''}
+                ${isMobile ? "text-[20px]" : ""}
+                `}>
                 {["A","B","C","D","E"][index]}
               </p>
             </div>
-            {option}
+            <p className={`w-full ${isMobile ? "text-[15px]" : ""}`}>
+              {option}
+            </p>
             {isAnswerSubmitted && selectedOption && selectedOption.option === option && (
               <img className="absolute right-2" src={selectedOption.isCorrect ? goodImg : wrongImg} alt={selectedOption.isCorrect ? "Correct" : "Incorrect"} />
             )}
@@ -196,23 +205,24 @@ const QuizApp = ({ onToggleDarkMode }) => {
           </button>
         ))}
         {isAnswerSubmitted && (
-          <div className='w-full'>
+          <div className={`w-full ${isMobile ? "flex justify-center items-center" : ""}`}>
             <button
-              className={`hover:opacity-70 drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S ${isTablet ? "h-[80px]" : "h-[96px]"}`}               onClick={handleNextQuestion}
+              className={`hover:opacity-70 drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S ${isTablet ? "h-[80px]" : "h-[96px]"} ${isMobile ? "h-[60px] w-[290px] rounded-[12px] text-[18px]" : "rounded-[24px]"}`}               
+              onClick={handleNextQuestion}
             >
               Next Question
             </button>
           </div>
         )}
         {!isAnswerSubmitted && (
-          <div className='w-full relative'>
+          <div className={`w-full relative ${isMobile ? "flex items-center justify-center" : ""}`}>
               {alertMessage && 
                 <div className="text-red-500 mb-4 absolute bottom-[-70px] left-1/3 font-RubikRegular font-bold flex items-center">
                   <img src={wrongImg} />
                   {alertMessage}
                 </div>}
             <button
-              className={`hover:opacity-70 drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S ${isTablet ? "h-[80px]" : "h-[96px]"}`} 
+              className={`hover:opacity-70 drop-shadow bg-violet text-white w-full relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S ${isTablet ? "h-[80px]" : "h-[96px]"} ${isMobile ? "h-[60px] w-[290px] rounded-[12px] text-[18px]" : "rounded-[24px]"}`} 
               onClick={handleSubmit}
             >
               Submit Answer
@@ -227,7 +237,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
   if (showScore) {
     return (
 
-      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"}`}>
+      <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"} ${isMobile ? "w-[300px] flex-col items-center" : ""}`}>
         {buttonDarkLightMode()}
         <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
           <div className={`h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isTablet ? "ml-16" : ""}`}>
@@ -236,17 +246,17 @@ const QuizApp = ({ onToggleDarkMode }) => {
           <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>{selectedQuizTitle}</div>
         </div>
 
-          <div className={`w-[625px] h-[300px] relative ${isTablet ? "ml-16" : ""}`}>
-            <p className={`font-RubikRegular ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[50px]" : "text-[64px] "}`}>Quizz Completed</p>
-            <p className={`font-RubikMedium font-bold ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[50px]" : "text-[64px] "}`}>You Scored ...</p>
+          <div className={`w-[625px] h-[300px] relative ${isTablet ? "ml-16" : ""} ${isMobile ? "ml-96" : ""}`}>
+            <p className={`font-RubikRegular ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[50px]" : "text-[64px] "} ${isMobile ? "text-[30px]" : ""}`}>Quizz Completed</p>
+            <p className={`font-RubikMedium font-bold ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[50px]" : "text-[64px] "} ${isMobile ? "text-[30px]" : ""}`}>You Scored ...</p>
           </div>
 
 
 
-        <div className={`w-[575px] h-[388px] flex flex-col items-center justify-between drop-shadow  ${isDarkMode ? "bg-[#3B4D66]" : "bg-white"} rounded-[24px] relative ${isTablet ? "mb-12" : ""}`}>
+        <div className={`flex flex-col items-center justify-between drop-shadow  ${isDarkMode ? "bg-[#3B4D66]" : "bg-white"} rounded-[24px] relative ${isTablet ? "mb-12" : ""} ${isMobile ? "w-[250px] h-[350px] mb-24" : "w-[575px] h-[388px]"}`}>
           
             <div className='w-[300px] h-[56px] flex items-center justify-center mt-8'>
-              <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
+              <div className={`h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px] ${isTablet ? "ml-16" : ""} ${isMobile ? "ml-2" : ""}`}>
                 <img src={selectedImgSrc} alt="logo"/>
               </div>
               <div className={`font-RubikMedium ${isDarkMode ? "text-white" : "text-darkNavy"} text-2xl ml-4`}>
@@ -254,10 +264,10 @@ const QuizApp = ({ onToggleDarkMode }) => {
               </div>
             </div>
           
-            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} isDarkMode={isDarkMode} isTablet={isTablet} />
+            <ScoreDisplay score={score} totalQuestions={currentQuiz.questions.length} isDarkMode={isDarkMode} isMobile={isMobile} />
 
             <button
-              className={`hover:opacity-70 hover:border drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S  ${isTablet ? "bottom-[-110px] h-[80px]" : "bottom-[-200px] h-[96px]"}` }
+              className={`hover:opacity-70 hover:border drop-shadow bg-violet text-white w-full rounded-[24px] relative flex items-center justify-center cursor-pointer font-RubikMedium text-Heading-S  ${isTablet ? "bottom-[-110px] h-[80px]" : "bottom-[-200px] h-[96px]"} ${isMobile ? "h-[60px] w-[290px] rounded-[12px] text-[18px] absolute bottom-[-90px]" : "rounded-[24px]"}` }
               onClick={handleRestartQuiz}
             >
               Play Again
@@ -268,14 +278,14 @@ const QuizApp = ({ onToggleDarkMode }) => {
   }
 
   return (
-    <div className={`w-[1250px] h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"}`}>
+    <div className={`h-[600px] flex justify-between relative ${isTablet ? "w-[700px] flex-col items-center" : "w-[1250px]"} ${isMobile ? "w-[300px] flex-col items-center" : ""}`}>
       {buttonDarkLightMode()}
-      <div className={`w-[625px] h-[300px] relative ${isTablet ? "pl-8" : ""} `}>
-        <p className={`font-RubikRegular ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[52px]" : "text-[64px]"} `}>Welcome to the</p>
-        <p className={`font-RubikMedium font-bold ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[52px] mb-4" : "text-[64px]"}  `}>Frontend Quiz!</p>
-        <p className={`font-RubikRegular text-Body-M italic absolute bottom-0 ${isDarkMode ? "text-white" : "text-greyNavy"} ${isTablet ? "mb-2" : ""}`}>Pick a subject to get started.</p>
+      <div className={`w-[625px] h-[300px] relative ${isTablet ? "pl-8" : ""} ${isMobile ? "pl-48" : ""}`}>
+        <p className={`font-RubikRegular ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[52px]" : "text-[64px]"} ${isMobile ? "text-[30px]" : ""}`}>Welcome to the</p>
+        <p className={`font-RubikMedium font-bold ${isDarkMode ? "text-white" : "text-darkNavy"} ${isTablet ? "text-[52px] mb-4" : "text-[64px]"} ${isMobile ? "text-[30px]" : ""} `}>Frontend Quiz!</p>
+        <p className={`font-RubikRegular text-Body-M italic absolute bottom-0 ${isDarkMode ? "text-white" : "text-greyNavy"} ${isTablet ? "mb-2" : ""} ${isMobile ? "mb-12" : ""}`}>Pick a subject to get started.</p>
       </div>
-      <div className="h-full w-[575px] flex flex-col justify-between">
+      <div className={`h-full w-[575px] flex flex-col justify-between ${isMobile ? "items-center" : ""}`}>
 
         {buttonQuiz()}
 
