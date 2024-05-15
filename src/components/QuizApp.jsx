@@ -14,7 +14,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [selectedQuizTitle, setSelectedQuizTitle] = useState(null);
   const [currentQuiz, setCurrentQuiz] = useState(null);
-  const [timer, setTimer] = useState(10); // Initial timer set to 10 seconds
+  const [timer, setTimer] = useState(10); 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -44,7 +44,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
         setCurrentQuiz(selectedQuiz);
         setCurrentQuestionIndex(0);
         setSelectedAnswer(null);
-        setTimer(10); // Reset timer to 10 seconds
+        setTimer(10); 
       }
     }
   }, [selectedQuizTitle]);
@@ -82,7 +82,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
         setSelectedOption(null);
         setIsAnswerSubmitted(false);
         setIsSubmitted(false);
-        setTimer(10); // Reset timer to 10 seconds
+        setTimer(10); 
       } else {
         setShowQuiz(false);
         setShowScore(true);
@@ -121,7 +121,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
     setIsAnswerSubmitted(false);
     setAlertMessage('');
     setScore(0);
-    setTimer(10); // Reset timer to 10 seconds
+    setTimer(10); 
   };
 
   const darkLightMode = (e) => {
