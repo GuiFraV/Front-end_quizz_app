@@ -143,9 +143,9 @@ const QuizApp = ({ onToggleDarkMode }) => {
   
   if (showQuiz && currentQuiz) {
     return (
-      <div className='w-[1250px] h-[600px] flex justify-between relative'>
+      <div className='xl:w-[1250px] h-[600px] flex justify-between relative'>
         {buttonDarkLightMode()}
-        <div className='w-[300px] h-[56px] flex items-center absolute left-0 top-[-3.875rem]'>
+        <div className='w-[300px] h-[56px] md:flex-col flex items-center absolute left-0 top-[-3.875rem]'>
           <div className='h-[56px] w-[56px] flex items-center justify-center bg-[#FFF1E9] rounded-[8px]'>
             <img src={selectedImgSrc} alt="logo"/>
           </div>
@@ -255,11 +255,7 @@ const QuizApp = ({ onToggleDarkMode }) => {
               Play Again
             </button>
         </div>
-      </div>
-    
-          
-          
-          
+      </div> 
       )
   }
 

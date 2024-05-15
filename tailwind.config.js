@@ -28,7 +28,19 @@ export default {
         'Heading-S' : "28px",
         'Body-M' : "12px",
 
-      }
+      },
+      screens: {
+        'md': '760px',
+        'lg': '1024px', 
+      },
+      backgroundImage: {
+        'desktop-light': "url('/images/pattern-background-desktop-light.svg')",
+        'desktop-dark': "url('/images/pattern-background-desktop-dark.svg')",
+        'tablet-light': "url('/images/pattern-background-tablet-light.svg')",
+        'tablet-dark': "url('/images/pattern-background-tablet-dark.svg')",
+        'mobile-light': "url('/images/pattern-background-mobile-light.svg')",
+        'mobile-dark': "url('/images/pattern-background-tablet-dark.svg')",
+      },
     },
   },
   plugins: [],
