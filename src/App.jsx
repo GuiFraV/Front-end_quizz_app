@@ -17,7 +17,7 @@ export default function App() {
       <Canvas className="h-screen bg-black">
         <Stars />
         <Html center>
-          <div className={`flex items-center justify-center xl:w-[1445px] lg:w-11/12 h-[825px] bg-no-repeat bg-auto
+          <div className={`flex items-center justify-center xl:w-[1445px] lg:w-11/12 h-[825px] bg-no-repeat bg-auto rounded-[36px]
                 ${isDarkMode ? "bg-darkNavy" : "bg-white"} 
                 ${isDarkMode ? "bg-desktop-dark" : "bg-desktop-light"}`
               }>
